@@ -1,6 +1,7 @@
 const authRouter = require('express').Router();
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+const VARS = require('../res/variables')
 require('dotenv').config();
 
 const User = require('../models/User');
@@ -15,7 +16,9 @@ authRouter.post('/user', async (req, res) => {
 		const newUser = new User({
 			username: body.username,
 			password: hashedPass,
-			accountCreated: new Date()
+			accountCreated: new Date(),
+			options: {},
+			types: VARS.DEFAULT_TYPES
 		});
 		await newUser.save();
 		res.status(201).json({ success: "created new user" });

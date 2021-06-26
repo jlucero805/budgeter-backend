@@ -37,6 +37,7 @@ purchaseRouter.post('/', authToken, async (req, res) => {
 			date: new Date()
 		});
 		await newPurchase.save();
+		res.json(newPurchase);
 	} catch (e) {
 		res.status(500);
 	}
@@ -55,8 +56,8 @@ purchaseRouter.delete('/', async (req, res) => {
 //delete single purchase
 purchaseRouter.delete('/:id', authToken, async (req, res) => {
 	try {
-		const params = req.params;
-		await Purchase.deleteMany({ id: params.id });
+		const id = req.params.id;
+		await Purchase.deleteOne({ _id: id }, (err) => console.log(err));
 		res.sendStatus(200);
 	} catch (e) {
 		res.sendStatus(400);

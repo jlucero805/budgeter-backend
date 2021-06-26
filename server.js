@@ -13,6 +13,7 @@ app.use(express.json());
 //routers
 const authRouter = require('./src/routers/authRouter');
 const purchaseRouter = require('./src/routers/purchaseRouter');
+const userRouter = require('./src/routers/userRouter');
 
 // models
 const Purchase = require('./src/models/Purchase');
@@ -24,6 +25,7 @@ mongoose.connect(process.env.MONGOOSE_CON, {useNewUrlParser: true, useUnifiedTop
 
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/purchase', purchaseRouter);
+app.use('/api/v1/user', userRouter);
 
 // logger
 app.use((req, res, next) => {
