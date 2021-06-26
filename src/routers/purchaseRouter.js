@@ -25,5 +25,42 @@ purchaseRouter.get('/', authToken, async (req, res) => {
 	}
 }); 
 
+// add new purchase
+purchaseRouter.post('/', authToken, async (req, res) => {
+	const body = req.body;
+	try {
+		const newPurchase = new Purchase({
+			username: req.token.username,
+			item: body.item,
+			type: body.type,
+			cost: body.cost,
+			date: new Date()
+		});
+		await newPurchase.save();
+	} catch (e) {
+		res.status(500);
+	}
+});
+
+// delete all purchases
+purchaseRouter.delete('/', async (req, res) => {
+	try {
+		await Purchase.deleteMany({});
+		res.sendStatus(200);
+	} catch (e) {
+		res.sendStatus(400);
+	}
+});
+
+//delete single purchase
+purchaseRouter.delete('/:id', authToken, async (req, res) => {
+	try {
+		const params = req.params;
+		await Purchase.deleteMany({ id: params.id });
+		res.sendStatus(200);
+	} catch (e) {
+		res.sendStatus(400);
+	}
+});
 
 module.exports = purchaseRouter;

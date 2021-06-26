@@ -8,6 +8,12 @@ const purchaseSchema = new mongoose.Schema({
 	date: Date
 });
 
+purchaseSchema.set('toJSON', {
+	transform: (document, returnedObject) => {
+		returnedObject.id = returnedObject._id.toString();
+	}
+});
+
 const Purchase = mongoose.model('purchase', purchaseSchema);
 
 module.exports = Purchase;
