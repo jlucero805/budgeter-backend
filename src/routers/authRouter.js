@@ -6,6 +6,10 @@ require('dotenv').config();
 
 const User = require('../models/User');
 
+authRouter.get('/', async (req, res) => {
+	res.json({works: "works!"});
+});
+
 // create new user
 authRouter.post('/user', async (req, res) => {
 	const body = req.body;

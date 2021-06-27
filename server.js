@@ -19,7 +19,8 @@ const userRouter = require('./src/routers/userRouter');
 const Purchase = require('./src/models/Purchase');
 
 // db connection
-mongoose.connect(process.env.MONGOOSE_CON, {useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false})
+const DB_CON = process.env.NODE_ENV === 'production' ? process.env.MONGOOSE_CON_ATLAS : process.env.MONGOOSE_CON;
+mongoose.connect(DB_CON, {useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false})
 	.then(() => {console.log('connected to mongo!')})
 	.catch((err) => {console.log('mongo connection failed!')});
 
@@ -35,5 +36,5 @@ app.use((req, res, next) => {
 });
 
 // port connection
-const PORT = 8080;
+const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {console.log(`running on port ${PORT}`)}); 
