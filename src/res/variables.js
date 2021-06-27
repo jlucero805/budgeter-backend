@@ -4,7 +4,8 @@ const strings = {
 		'Food',
 		'Personal Development',
 		'Entertainment',
-		'Professional'
+		'Professional',
+		'Health'
 	]
 }
 

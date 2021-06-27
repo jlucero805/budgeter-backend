@@ -7,7 +7,7 @@ require('dotenv').config();
 const User = require('../models/User');
 
 authRouter.get('/', async (req, res) => {
-	res.json({works: "works!"});
+	res.json({ works: "works!" });
 });
 
 // create new user
@@ -35,7 +35,7 @@ authRouter.post('/user', async (req, res) => {
 authRouter.post('/login', async (req, res) => {
 	const body = req.body;
 	const user = await User.findOne({ username: body.username });
-	if (user === null) { return res.json({ error: "user already exists!" }) };
+	if (user === null) { return res.json({ error: "user does not exist!" }) };
 	try {
 		if (await bcrypt.compare(body.password, user.password)) {
 			const jwtUser = { username: body.username, password: body.password }
@@ -47,6 +47,16 @@ authRouter.post('/login', async (req, res) => {
 	}
 	catch (e) {
 		res.json({ error: "login failed" });
+	}
+});
+
+// delete all users
+authRouter.delete('/', async (req, res) => {
+	try {
+		await User.deleteMany({});
+		res.sendStatus(200);
+	} catch (e) {
+		res.json({fail: 'fail'});
 	}
 });
 
