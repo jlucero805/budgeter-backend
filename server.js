@@ -23,6 +23,7 @@ mongoose.connect(process.env.MONGOOSE_CON, {useNewUrlParser: true, useUnifiedTop
 	.then(() => {console.log('connected to mongo!')})
 	.catch((err) => {console.log('mongo connection failed!')});
 
+// user routers
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/purchase', purchaseRouter);
 app.use('/api/v1/user', userRouter);

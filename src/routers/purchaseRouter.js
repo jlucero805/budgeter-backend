@@ -1,22 +1,10 @@
 const purchaseRouter = require('express').Router();
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
+const middleware = require('../utils/middleware');
 
 const Purchase = require('../models/Purchase');
 
-const authToken = (req, res, next) => {
-	const authHeader = req.headers['authorization'];
-	const token = authHeader && authHeader.split(' ')[1];
-	if (token === null) return res.sendStatus(401);
-	jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, authenticatedToken) => {
-		if (err) return res.sendStatus(403);
-		req.token = authenticatedToken;
-		next(); 
-	});
-}
-
 // get all purchases for a single user 
-purchaseRouter.get('/', authToken, async (req, res) => {
+purchaseRouter.get('/', middleware.authToken, async (req, res) => {
 	try {
 		const allPurchases = await Purchase.find({ username: req.token.username });
 		res.json(allPurchases.reverse());
@@ -26,7 +14,7 @@ purchaseRouter.get('/', authToken, async (req, res) => {
 }); 
 
 // add new purchase
-purchaseRouter.post('/', authToken, async (req, res) => {
+purchaseRouter.post('/', middleware.authToken, async (req, res) => {
 	const body = req.body;
 	try {
 		const newPurchase = new Purchase({
@@ -54,7 +42,7 @@ purchaseRouter.delete('/', async (req, res) => {
 });
 
 //delete single purchase
-purchaseRouter.delete('/:id', authToken, async (req, res) => {
+purchaseRouter.delete('/:id', middleware.authToken, async (req, res) => {
 	try {
 		const id = req.params.id;
 		await Purchase.deleteOne({ _id: id }, (err) => console.log(err));

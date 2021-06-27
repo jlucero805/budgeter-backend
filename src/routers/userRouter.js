@@ -1,24 +1,18 @@
 const userRouter = require('express').Router();
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
-const VARS = require('../res/variables');
 const User = require('../models/User');
+const middleware = require('../utils/middleware');
 require('dotenv').config();
 
+// get all data of a single user
+userRouter.get('/', middleware.authToken, async (req, res) => {
+	const user = await User.find({username: req.token.username});
+	res.json(user);
+})
 
-const authToken = (req, res, next) => {
-	const authHeader = req.headers['authorization'];
-	const token = authHeader && authHeader.split(' ')[1];
-	if (token === null) return res.sendStatus(401);
-	jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, authenticatedToken) => {
-		if (err) return res.sendStatus(403);
-		req.token = authenticatedToken;
-		next(); 
-	});
-}
-
-userRouter.get('/', authToken, async (req, res) => {
-	// finish getting single account
+// get types
+userRouter.get('/types', middleware.authToken, async (req, res) => {
+	const user = await User.findOne({username: req.token.username});
+	res.json({types: user.types});
 })
 
 module.exports = userRouter;
