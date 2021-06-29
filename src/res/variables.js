@@ -5,7 +5,8 @@ const strings = {
 		'Personal Development',
 		'Entertainment',
 		'Professional',
-		'Health'
+		'Health',
+		'Transportation'
 	]
 }
 
