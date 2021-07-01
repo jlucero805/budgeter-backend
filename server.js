@@ -24,16 +24,16 @@ mongoose.connect(DB_CON, {useNewUrlParser: true, useUnifiedTopology: true, useFi
 	.then(() => {console.log('connected to mongo!')})
 	.catch((err) => {console.log('mongo connection failed!')});
 
+// logger
+app.use((req, res, next) => {
+	console.log(req.method, req.originalUrl);
+	next();
+});
+
 // user routers
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/purchase', purchaseRouter);
 app.use('/api/v1/user', userRouter);
-
-// logger
-app.use((req, res, next) => {
-	console.log("req.method, req.origninalUrl");
-	next();
-});
 
 // port connection
 const PORT = process.env.PORT || 8080;
